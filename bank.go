@@ -16,7 +16,7 @@ func getBalanceFromFile() (float64, error) {
 	data, err := os.ReadFile(accountBalanceFile)
 
 	if err != nil {
-		return 1000, errors.New(("failed to find balance file"))
+		return 1000, errors.New("failed to find balance file")
 	} // esto es para manejar errores que si hay algun error con la cifra inicial vuelva a un valor predeterminado
 
 	balanceText := string(data)
@@ -49,20 +49,15 @@ func main() {
 		fmt.Println("Error")
 		fmt.Println(err)
 		fmt.Println("--------------")
-		//* panic("cant continue without balance file") lo mismo que el return pero da como una señal mas clara de que hay un error 
-		// return si quiere que el programa no funcione ya sin ese archivo txt por que es obligatorio tenerlo solo tengo que permitir este return  
+		//* panic("cant continue without balance file") lo mismo que el return pero da como una señal mas clara de que hay un error
+		// return si quiere que el programa no funcione ya sin ese archivo txt por que es obligatorio tenerlo solo tengo que permitir este return
 	}
 
 	fmt.Println("welcome to go bank")
 
 	for {
 		//* dejando el bucle for solo hace que el codigo se repita infinitamente hasta que se cumpla la condicion de salida que en este caso es el else
-
-		fmt.Println(("what do you want to do"))
-		fmt.Println("1. check balance")
-		fmt.Println("2. deposit money")
-		fmt.Println("3. Withdraw money")
-		fmt.Println("4. Exit")
+		presentOptions()
 
 		var choice int
 		fmt.Print("Your choice: ")
@@ -127,3 +122,4 @@ func main() {
 	}
 
 }
+
