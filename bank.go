@@ -1,49 +1,20 @@
 package main
 
 import (
-	"errors"
+	"examples.com/bank/fileops"
 	"fmt"
-	"os"
-	"strconv"
+	"github.com/Pallinder/go-randomdata"
 )
 
 // constante global
 
 const accountBalanceFile = "balance.txt"
 
-// /////////////////////////////////////////////////////////////////////////
-func getBalanceFromFile() (float64, error) {
-	data, err := os.ReadFile(accountBalanceFile)
-
-	if err != nil {
-		return 1000, errors.New("failed to find balance file")
-	} // esto es para manejar errores que si hay algun error con la cifra inicial vuelva a un valor predeterminado
-
-	balanceText := string(data)
-	balance, err := strconv.ParseFloat(balanceText, 64)
-
-	if err != nil {
-		return 1000, errors.New("failed to parse stored balance value")
-	}
-
-	return balance, nil
-
-	//* ( _ ) agregar ese guion bajo es como decirle al programa que se use eso para manejar errores temporalmente y que despues vas a poner alguna funcion o algo para manejarlo
-
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-
-func writeBalanceToFile(balance float64) {
-	balanceText := fmt.Sprint(balance)
-	os.WriteFile(accountBalanceFile, []byte(balanceText), 0644)
-} //* esto permite cuando agrego un valor a la cuenta le sumo 200 por ejemplo esa cantidad que queda del total se guarda en un archivo txt
-
 ////////////////////////////////////////////////////////////////////////////////
 
 func main() {
 
-	var accountBalance, err = getBalanceFromFile()
+	var accountBalance, err = fileops.GetFloatFromFile(accountBalanceFile)
 
 	if err != nil {
 		fmt.Println("Error")
@@ -54,6 +25,7 @@ func main() {
 	}
 
 	fmt.Println("welcome to go bank")
+	fmt.Println("reach us 24/7", randomdata.PhoneNumber())
 
 	for {
 		//* dejando el bucle for solo hace que el codigo se repita infinitamente hasta que se cumpla la condicion de salida que en este caso es el else
@@ -86,7 +58,7 @@ func main() {
 
 			accountBalance += depositAmount // accountBalance = accountBalance + depositAmount
 			fmt.Println("Balance updated! New Amount:", accountBalance)
-			writeBalanceToFile(accountBalance)
+			fileops.WriteFloatToFile(accountBalance, accountBalanceFile)
 
 			///////////////////////////////////////////////////////////////////////////
 		case 3:
@@ -106,7 +78,7 @@ func main() {
 			}
 			accountBalance -= witdrawAmount
 			fmt.Println("Balance updated! New Amount:", accountBalance)
-			writeBalanceToFile(accountBalance)
+			fileops.WriteFloatToFile(accountBalance, accountBalanceFile)
 
 			///////////////////////////////////////////////////////////////////////////
 
@@ -122,4 +94,3 @@ func main() {
 	}
 
 }
-
